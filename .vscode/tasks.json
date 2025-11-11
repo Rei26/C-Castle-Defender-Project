@@ -1,0 +1,85 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Build Console (MSYS2 UCRT64)",
+            "type": "shell",
+            "command": "C:/msys64/usr/bin/bash.exe",
+            "args": [
+                "--login",
+                "-c",
+                "cd $(cygpath -u \"${workspaceFolder}\") && g++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/Game.cpp Sources/main.cpp -I Header -o castle_defender.exe"
+            ],
+            "options": {
+                "env": {
+                    "MSYSTEM": "UCRT64",
+                    "CHERE_INVOKING": "1"
+                }
+            },
+            "problemMatcher": "$gcc",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "echo": true,
+                "focus": true
+            },
+            "detail": "Build console version with MSYS2 UCRT64 g++"
+        },
+        {
+            "label": "Run Console (Terminal)",
+            "type": "shell",
+            "command": "${workspaceFolder}\\castle_defender.exe",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "C:/msys64/ucrt64/bin;${env:PATH}"
+                }
+            },
+            "dependsOn": "Build Console (MSYS2 UCRT64)",
+            "problemMatcher": []
+        },
+        {
+            "label": "Build GUI (MSYS2 FLTK)",
+            "type": "shell",
+            "command": "C:/msys64/usr/bin/bash.exe",
+            "args": [
+                "--login",
+                "-c",
+                "cd $(cygpath -u \"${workspaceFolder}\") && g++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/GuiGame.cpp Sources/GameView.cpp Sources/main_fltk.cpp -I Header $(fltk-config --cxxflags) $(fltk-config --ldflags) -o castle_defender_fltk.exe"
+            ],
+            "options": {
+                "env": {
+                    "MSYSTEM": "UCRT64",
+                    "CHERE_INVOKING": "1",
+                    "PATH": "C:/msys64/ucrt64/bin;C:/msys64/usr/bin;${env:PATH}"
+                },
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$gcc",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "echo": true,
+                "focus": true
+            },
+            "detail": "Build FLTK GUI using MSYS2 UCRT64 g++"
+        },
+        {
+            "label": "Run GUI (Terminal)",
+            "type": "shell",
+            "command": "${workspaceFolder}\\castle_defender_fltk.exe",
+            "options": {
+                "cwd": "${workspaceFolder}",
+                "env": {
+                    "PATH": "C:/msys64/ucrt64/bin;${env:PATH}"
+                }
+            },
+            "dependsOn": "Build GUI (MSYS2 FLTK)",
+            "problemMatcher": []
+        }
+    ]
+}
