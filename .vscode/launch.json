@@ -30,6 +30,27 @@
             "preLaunchTask": "Build Console (MSYS2 UCRT64)"
         },
         {
+            "name": "Console Game (macOS)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/castle_defender",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "lldb",
+            "miDebuggerPath": "${workspaceFolder}/.vscode/macos-lldb-mi.sh",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for lldb-mi",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build Console (macOS)"
+        },
+        {
             "name": "GUI Game (FLTK)",
             "type": "cppdbg",
             "request": "launch",
@@ -56,6 +77,27 @@
                 }
             ],
             "preLaunchTask": "Build GUI (MSYS2 FLTK)"
+        },
+        {
+            "name": "GUI Game (macOS FLTK)",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/castle_defender_fltk",
+            "args": [],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": true,
+            "MIMode": "lldb",
+            "miDebuggerPath": "${workspaceFolder}/.vscode/macos-lldb-mi.sh",
+            "setupCommands": [
+                {
+                    "description": "Enable pretty-printing for lldb-mi",
+                    "text": "-enable-pretty-printing",
+                    "ignoreFailures": true
+                }
+            ],
+            "preLaunchTask": "Build GUI (macOS FLTK)"
         }
     ]
 }

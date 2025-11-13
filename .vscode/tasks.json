@@ -43,6 +43,52 @@
             "problemMatcher": []
         },
         {
+            "label": "Run Console (macOS Terminal)",
+            "type": "shell",
+            "command": "./castle_defender",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Build Console (macOS)",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "echo": true,
+                "focus": true
+            },
+            "detail": "Builds then runs the macOS console binary"
+        },
+        {
+            "label": "Build Console (macOS)",
+            "type": "shell",
+            "command": "/usr/bin/clang++",
+            "args": [
+                "-std=c++17",
+                "-O2",
+                "Sources/Grid.cpp",
+                "Sources/Tower.cpp",
+                "Sources/AIController.cpp",
+                "Sources/Game.cpp",
+                "Sources/main.cpp",
+                "-I",
+                "Header",
+                "-o",
+                "castle_defender"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$gcc",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "echo": true,
+                "focus": true
+            },
+            "detail": "Build console version with clang++ on macOS"
+        },
+        {
             "label": "Build GUI (MSYS2 FLTK)",
             "type": "shell",
             "command": "C:/msys64/usr/bin/bash.exe",
@@ -69,6 +115,26 @@
             "detail": "Build FLTK GUI using MSYS2 UCRT64 g++"
         },
         {
+            "label": "Build GUI (macOS FLTK)",
+            "type": "shell",
+            "command": "/bin/bash",
+            "args": [
+                "-lc",
+                "set -euo pipefail; clang++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/GuiGame.cpp Sources/GameView.cpp Sources/main_fltk.cpp -I Header $(fltk-config --cxxflags) $(fltk-config --ldflags) -o castle_defender_fltk"
+            ],
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "problemMatcher": "$gcc",
+            "presentation": {
+                "reveal": "always",
+                "panel": "dedicated",
+                "echo": true,
+                "focus": true
+            },
+            "detail": "Build FLTK GUI using system clang++ and fltk-config on macOS"
+        },
+        {
             "label": "Run GUI (Terminal)",
             "type": "shell",
             "command": "${workspaceFolder}\\castle_defender_fltk.exe",
@@ -80,6 +146,23 @@
             },
             "dependsOn": "Build GUI (MSYS2 FLTK)",
             "problemMatcher": []
+        },
+        {
+            "label": "Run GUI (macOS Terminal)",
+            "type": "shell",
+            "command": "./castle_defender_fltk",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "dependsOn": "Build GUI (macOS FLTK)",
+            "problemMatcher": [],
+            "presentation": {
+                "reveal": "always",
+                "panel": "shared",
+                "echo": true,
+                "focus": true
+            },
+            "detail": "Builds then launches the macOS FLTK binary"
         }
     ]
 }
