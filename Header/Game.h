@@ -40,7 +40,6 @@ private:
 
     std::mt19937 rng_;
 
-    // helpers
     void rebuildGrid();
     void printGrid() const;
     std::string cellSymbol(std::size_t r, std::size_t c) const;

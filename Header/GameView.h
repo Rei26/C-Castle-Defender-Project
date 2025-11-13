@@ -22,7 +22,7 @@ protected:
 
 private:
     Grid& grid_;
-    int cellPx_; // pixels per cell
+    int cellPx_;
     std::function<bool(std::size_t,std::size_t)> onClick_;
     std::function<std::optional<EnemyType>(std::size_t,std::size_t)> enemyLookup_;
 };

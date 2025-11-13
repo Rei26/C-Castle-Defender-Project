@@ -13,7 +13,7 @@
 #include "Enemy.h"
 #include "AIController.h"
 
-class GameView; // fwd
+class GameView;
 
 class GuiGame {
 public:
@@ -30,19 +30,15 @@ public:
 
     void attachView(GameView* view);
     void attachStatus(Fl_Box* box) { status_ = box; updateStatus(); }
-    // Select which stat the next upgrade click applies to
     void setUpgradeTypePublic(bool range) { upgradeRangeMode_ = range; updateStatus(); }
 
     bool startNextWave();
     void nextButtonAction();
 
-    // Called when user clicks a cell in the view
     bool onCellClick(std::size_t r, std::size_t c);
 
-    // One turn of the game logic
     void stepTurn();
 
-    // Auto-run controls
     void startAuto(double intervalSec = 1.0);
     void stopAuto();
 

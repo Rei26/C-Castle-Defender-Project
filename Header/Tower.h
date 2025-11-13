@@ -16,7 +16,6 @@ public:
     int range() const { return range_; }
     int damage() const { return damage_; }
 
-    // Returns index of targeted enemy if any
     std::optional<std::size_t> pickTarget(const std::vector<Enemy>& enemies) const;
     void fire(std::vector<Enemy>& enemies) const;
 

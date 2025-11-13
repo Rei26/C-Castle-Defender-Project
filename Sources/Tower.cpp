@@ -18,7 +18,6 @@ std::optional<std::size_t> Tower::pickTarget(const std::vector<Enemy>& enemies) 
                 bestDist = d;
                 bestIdx = i;
             } else if (d == bestDist) {
-                // tie-breaker: enemy closer to the castle row (larger r)
                 if (enemies[i].pos().r > enemies[bestIdx.value()].pos().r) {
                     bestIdx = i;
                 }

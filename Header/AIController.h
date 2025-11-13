@@ -29,7 +29,6 @@ public:
     int spawnedTotal() const { return spawnedTotal_; }
     int destroyedTotal() const { return destroyedTotal_; }
 
-    // returns true if extra HP was added due to high performance
     bool finalizeWave(int waveScoreEarned, int waveScoreMax);
 
 private:
@@ -40,7 +39,7 @@ private:
     const int enemiesPerWave_{10};
     const int baseAttack_{10};
 
-    int currentWave_{0}; // 0 = before first wave
+    int currentWave_{0};
     bool waveInProgress_{false};
     int spawnedThisWave_{0};
     int waveDestroyed_{0};

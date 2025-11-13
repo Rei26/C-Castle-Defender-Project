@@ -8,7 +8,7 @@ bool Grid::inBounds(std::size_t r, std::size_t c) const {
 }
 
 Cell Grid::at(std::size_t r, std::size_t c) const {
-    return inBounds(r, c) ? data_[idx(r, c)] : Cell::Blocked; // out-of-bounds acts like blocked
+    return inBounds(r, c) ? data_[idx(r, c)] : Cell::Blocked;
 }
 
 bool Grid::isEmpty(std::size_t r, std::size_t c) const {
@@ -52,7 +52,6 @@ void Grid::clear() {
 
 void Grid::setCastle(std::size_t r, std::size_t c) {
     if (!inBounds(r, c)) return;
-    // wipe any previous castle
     if (castleSet_) {
         setCell(castleRC_.first, castleRC_.second, Cell::Empty);
     }

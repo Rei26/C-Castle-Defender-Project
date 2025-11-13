@@ -9,8 +9,6 @@
 
 class Player {
 public:
-    // Places exactly count towers by reading from std::cin.
-    // Uses 1-based input for convenience. Validates positions.
     void placeTowers(int count, Grid& grid, const Castle& castle, std::vector<Tower>& towers) {
         std::cout << "Place exactly " << count << " towers (1-based row col)." << std::endl;
         std::cout << "Grid size: " << grid.rows() << "x" << grid.cols() << "; Castle at ("
@@ -24,11 +22,9 @@ public:
             std::size_t c = static_cast<std::size_t>(cc - 1);
             if (!grid.inBounds(r, c)) { std::cout << "Out of bounds.\n"; continue; }
             if (grid.at(r, c) != Cell::Empty) { std::cout << "Cell not empty.\n"; continue; }
-            // Avoid top row (spawns) and castle cell
             if (r == 0) { std::cout << "Top row is reserved for spawns.\n"; continue; }
             if (r == castle.pos().r && c == castle.pos().c) { std::cout << "Cannot place on castle.\n"; continue; }
 
-            // fixed stats for simplicity
             Tower t(r, c, /*range*/3, /*damage*/2);
             towers.push_back(t);
             grid.placeTower(r, c);

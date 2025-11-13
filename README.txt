@@ -1,85 +1,87 @@
-Castle Defender (Console Version)
-=================================
+Castle Defender
+================
 
 Overview
 --------
-- 20x20 grid with the castle in the bottom center (100 HP).
-- Player places exactly 5 towers before combat begins.
-- Five waves total, 10 enemies per wave. Enemies spawn one per turn on the top row.
-- Enemies move down (or diagonally when blocked) and deal 10 castle damage on contact.
-- Enemy types: Basic (red), Tank (purple, tougher), Scout (orange, faster).
-- AI monitors performance; if a wave scores ≥80% of the max with no castle damage, it grants +1 enemy HP for later waves.
+- 20×20 grid with the castle anchored at the bottom center (100 HP).
+- Player places exactly five towers before the first wave begins.
+- Five waves total; each wave spawns ten enemies (one per turn) across the top row.
+- Enemies walk straight down and try diagonal detours when blocked; reaching the castle deals 10 damage and removes the enemy.
+- Enemy types: Basic (3 HP, speed 1), Tank (purple, +2 HP, speed 1), Scout (orange, HP − 1, speed 2).
+- Adaptive AI: if the player finishes a wave with ≥80 % of the possible score and zero castle damage, all future enemies gain +1 base HP.
 
-How to Build
-------------
+Prerequisites
+-------------
+- A C++17-compatible compiler (MSYS2 UCRT64 g++, clang++, or MSVC /std:c++17).
+- For the GUI build: FLTK development headers + libraries and `fltk-config` on the PATH.
+- Windows instructions below assume MSYS2 UCRT64 is installed at `C:\msys64`.
 
-Option A: MSVC (Developer Command Prompt)
-- cl /std:c++17 /EHsc Sources\\Grid.cpp Sources\\Tower.cpp Sources\\AIController.cpp Sources\\Game.cpp Sources\\main.cpp /I Header
+How to Build (console)
+----------------------
 
-Option B: g++ (MinGW)
-- g++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/Game.cpp Sources/main.cpp -I Header -o castle_defender.exe
+### Option A: MSVC (Developer Command Prompt)
+```
+cl /std:c++17 /EHsc Sources\Grid.cpp Sources\Tower.cpp Sources\AIController.cpp Sources\Game.cpp Sources\main.cpp /I Header
+```
 
-Note: GameView.*, GuiGame.*, and main_fltk.cpp are only needed when building the FLTK GUI. Exclude them for the console build.
+### Option B: g++ / clang++
+```
+g++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/Game.cpp Sources/main.cpp -I Header -o castle_defender.exe
+```
 
-VS Code Tasks (recommended)
---------------------------
-- `Terminal → Run Task… → Build Console (MSYS2 UCRT64)` builds `castle_defender.exe` using the MSYS2 toolchain configured in `.vscode/tasks.json`.
-- `Terminal → Run Task… → Run Console (Terminal)` builds + launches the console game in the integrated terminal.
+> Note: `GameView.*`, `GuiGame.*`, and `main_fltk.cpp` are only required for the FLTK GUI build.
+
+VS Code Tasks (optional convenience)
+------------------------------------
+- `Terminal → Run Task… → Build Console (MSYS2 UCRT64)` builds `castle_defender.exe` via MSYS2 g++ (see `.vscode/tasks.json`).
+- `Terminal → Run Task… → Run Console (Terminal)` builds and immediately runs the console game.
 - `Terminal → Run Task… → Build GUI (MSYS2 FLTK)` builds `castle_defender_fltk.exe` using `fltk-config` from MSYS2 UCRT64.
-- `Terminal → Run Task… → Run GUI (Terminal)` builds + launches the FLTK GUI (opens a window, no extra commands needed).
-- Two launch configurations are also provided (see Run and Debug panel): “Console Game (UCRT64)” and “GUI Game (FLTK)”. Each rebuilds the correct binary before debugging.
+- `Terminal → Run Task… → Run GUI (Terminal)` builds and launches the FLTK GUI.
+- Launch configurations (“Console Game (UCRT64)” and “GUI Game (FLTK)”) are wired to these tasks; hitting F5 will build the correct target if the MSYS2 paths match your machine.
 
-FLTK GUI Build (optional)
--------------------------
-This builds the interactive GUI with click-to-place towers and optional 1s auto-turn timer.
+FLTK GUI Build
+---------------
+Interactive GUI with mouse-based tower placement, upgrade clicks, and auto-turn timer.
 
-Prerequisites: FLTK development libraries installed and on your compiler's include/lib paths.
-
-Recommended (MSYS2 UCRT64 shell):
-- g++ -std=c++17 -O2 \
+### Recommended command (MSYS2 UCRT64 shell)
+```
+g++ -std=c++17 -O2 \
     Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/GuiGame.cpp Sources/GameView.cpp Sources/main_fltk.cpp \
     -I Header $(fltk-config --cxxflags) $(fltk-config --ldflags) -o castle_defender_fltk.exe
+```
 
-Notes:
-- Without fltk-config, add `-I C:\msys64\ucrt64\include -L C:\msys64\ucrt64\lib -lfltk -lfltk_images -lfltk_forms -lole32 -luuid -lcomctl32 -lws2_32 -lgdi32`.
-- On macOS: add `-framework Cocoa -lfltk` and ensure you use Homebrew FLTK include/lib paths.
-- On Linux: link `-lfltk` and ensure X11 dev packages are available.
+### If `fltk-config` is unavailable
+Add include/lib paths and Windows libraries manually:
+```
+g++ ... -I C:/msys64/ucrt64/include -L C:/msys64/ucrt64/lib \
+    -lfltk -lfltk_images -lfltk_forms -lole32 -luuid -lcomctl32 -lws2_32 -lgdi32 -o castle_defender_fltk.exe
+```
 
-Running the GUI
----------------
-- Windows: .\castle_defender_fltk.exe
-- Place exactly 5 towers by clicking valid cells (not top row, not on castle).
-- Use "Start Wave" to begin each wave. "Next Turn" advances a single turn (or starts the wave if you are waiting).
-- "Start Auto" runs one turn per second; "Stop Auto" pauses. Auto automatically halts when a wave ends.
-- After a wave, select "Upgrade Dmg" or "Upgrade Rng" then click a tower to spend the upgrade point. Click "Start Wave" to continue.
 
-How to Run
-----------
-- Windows: .\\castle_defender.exe
-- Linux/macOS: ./castle_defender (if compiled that way)
+Running the executables
+-----------------------
+- Console (Windows): `./castle_defender.exe`
+- Console (Linux/macOS): `./castle_defender`
+- GUI: `./castle_defender_fltk.exe` (opens the FLTK window). No extra setup once built.
 
-Gameplay
---------
-- Console: place 5 towers via 1-based row/col input (not on the top row or castle). GUI: click to place.
-- Waves: 5 maximum, 10 enemies/wave, 1 spawn per turn. AI prefers columns ≥3 cells away from towers about 70% of the time but still mixes in risky spawns.
-- Movement: enemies fall straight down; if blocked by a tower/enemy they may shift diagonally down-left/right when open. They never move sideways without descending.
-- Enemy types: Basic (3 HP, speed 1), Tank (purple, +2 HP, speed 1), Scout (orange, HP-1, speed 2).
-- Castle collision deals 10 damage (castle starts at 100 HP) and removes the enemy.
-- Between waves you receive 1 upgrade point to boost any tower's damage or range. Spend it before starting the next wave.
-- AI adaptation: if the wave's score is ≥80% of the theoretical max (all kills) **and** the castle takes no damage, upcoming enemies gain +1 base HP.
-- Console loop prompts you to press Enter each turn (or `q` + Enter to quit) and shows ASCII symbols when Unicode is unavailable.
+Gameplay quick reference
+------------------------
+- Place 5 towers (console: 1-based row/col; GUI: click) anywhere except the top row or castle cell.
+- Enemies spawn one per turn; AI prefers columns at least three cells away from towers ~70 % of the time but occasionally targets defended lanes.
+- Towers fire each turn at the closest enemy in range; ties break toward the enemy closest to the castle.
+- When a wave ends, you receive one upgrade point. Console prompts for tower coordinates and D/R; GUI requires clicking “Upgrade Dmg/Upgrade Rng” then clicking a tower. Waves resume only after spending or forfeiting the upgrade.
+- Score: +10 per enemy destroyed; final summary prints Player Score, Enemies Destroyed, Castle Health, and Winner (Player vs AI).
 
-Scoring
--------
-- +10 points per enemy destroyed.
-- Final summary (console + GUI) prints: Player Score, Enemies Destroyed, Castle Health, Winner.
-
-Winning & Losing
-----------------
-- Lose if the castle HP reaches 0.
-- Win after all 5 waves are cleared and no enemies remain.
+Troubleshooting / portability notes
+-----------------------------------
+1. **Include path** – Every compile command must contain `-I Header` (or VS projects must add `Header/` to Additional Include Directories) or `Game.h` will not be found.
+2. **Toolchain** – The VS Code tasks assume MSYS2 lives in `C:/msys64`. If your installation is elsewhere, update the paths in `.vscode/tasks.json` (and `.vscode/launch.json`) accordingly.
+3. **FLTK availability** – The GUI build requires `fltk-config` on the PATH. If it is missing, install `mingw-w64-ucrt-x86_64-fltk` via MSYS2 or point the command at your FLTK include/lib directories.
+4. **Prebuilt binaries** – Optional: if you compile the EXEs on your machine, include `castle_defender.exe` and/or `castle_defender_fltk.exe` in the submission zip. Anyone who already has the MSYS2 runtime DLLs (or who rebuilds from source) can run them immediately.
+5. **Other platforms** – The code is portable C++17; any OS with a modern compiler and (optionally) FLTK can build it by following the commands above.
 
 Files
 -----
-- Header/ and Sources/ contain the implementation.
-- Key classes: Game, Grid, Castle, Tower, Enemy, AIController, Player.
+- `Header/` and `Sources/` contain all headers/implementation files.
+- Key classes: `Game`, `GuiGame`, `Grid`, `Castle`, `Tower`, `Enemy`, `AIController`, `Player`, `GameView`.
+- `.vscode/` holds optional VS Code tasks/launchers that automate builds via MSYS2.

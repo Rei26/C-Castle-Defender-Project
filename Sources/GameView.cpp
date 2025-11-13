@@ -5,12 +5,10 @@ GameView::GameView(int X, int Y, int W, int H, Grid& grid, int cellPx)
     : Fl_Widget(X, Y, W, H), grid_(grid), cellPx_(cellPx) {}
 
 void GameView::draw() {
-    // background
     fl_push_clip(x(), y(), w(), h());
     fl_color(FL_WHITE);
     fl_rectf(x(), y(), w(), h());
 
-    // draw grid lines + cells
     for (std::size_t r = 0; r < grid_.rows(); ++r) {
         for (std::size_t c = 0; c < grid_.cols(); ++c) {
             int cx = x() + static_cast<int>(c) * cellPx_;
@@ -18,7 +16,6 @@ void GameView::draw() {
             int cw = cellPx_;
             int ch = cellPx_;
 
-            // fill based on cell type
             switch (grid_.at(r, c)) {
                 case Cell::Empty:   fl_color(FL_WHITE); break;
                 case Cell::Tower:   fl_color(FL_GREEN); break;
@@ -38,7 +35,6 @@ void GameView::draw() {
             }
             fl_rectf(cx, cy, cw, ch);
 
-            // cell border
             fl_color(FL_LIGHT2);
             fl_rect(cx, cy, cw, ch);
         }

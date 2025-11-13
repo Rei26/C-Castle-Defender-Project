@@ -75,8 +75,7 @@ std::size_t AIController::pickColumn(const Grid& grid, const std::vector<Tower>&
         else preferred.push_back(c);
     }
 
-    if (preferred.empty() && fallback.empty()) return cols_; // invalid sentinel
-
+    if (preferred.empty() && fallback.empty()) return cols_;
     bool usePreferred = !preferred.empty() && (fallback.empty() || randUnit(rng_) < 0.7);
     auto& pool = usePreferred ? preferred : fallback;
     std::size_t idx = static_cast<std::size_t>(rng_() % pool.size());
