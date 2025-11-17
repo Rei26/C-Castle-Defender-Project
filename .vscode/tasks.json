@@ -8,7 +8,7 @@
             "args": [
                 "--login",
                 "-c",
-                "cd $(cygpath -u \"${workspaceFolder}\") && g++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/Game.cpp Sources/main.cpp -I Header -o castle_defender.exe"
+                "g++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/Game.cpp Sources/main.cpp -I Header -o castle_defender.exe"
             ],
             "options": {
                 "env": {
@@ -95,7 +95,7 @@
             "args": [
                 "--login",
                 "-c",
-                "cd $(cygpath -u \"${workspaceFolder}\") && g++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/GuiGame.cpp Sources/GameView.cpp Sources/main_fltk.cpp -I Header $(fltk-config --cxxflags) $(fltk-config --ldflags) -o castle_defender_fltk.exe"
+                "g++ -std=c++17 -O2 Sources/Grid.cpp Sources/Tower.cpp Sources/AIController.cpp Sources/GuiGame.cpp Sources/GameView.cpp Sources/main_fltk.cpp -I Header $(fltk-config --cxxflags) $(fltk-config --ldflags) -o castle_defender_fltk.exe"
             ],
             "options": {
                 "env": {

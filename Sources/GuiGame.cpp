@@ -189,7 +189,6 @@ void GuiGame::handleWaveCompletion() {
     bool excellent = ai_.finalizeWave(currentWaveScore_, currentWaveMax_);
     currentWaveScore_ = 0;
     currentWaveMax_ = 0;
-    castle_.setHP(STARTING_CASTLE_HP);
     if (ai_.hasMoreWaves()) {
         beginUpgradePhase(1);
         fl_message(excellent ? "Wave complete! Enemy HP increased." : "Wave complete.");

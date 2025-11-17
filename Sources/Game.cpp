@@ -163,7 +163,6 @@ void Game::waveCompleted(bool excellent) {
     waitingForWave_ = ai_.hasMoreWaves();
     currentWaveScore_ = 0;
     currentWaveMaxScore_ = 0;
-    castle_.setHP(STARTING_CASTLE_HP);
     std::cout << "\n--- Wave complete ---";
     if (excellent) std::cout << " (Enemy HP increased!)";
     std::cout << '\n';

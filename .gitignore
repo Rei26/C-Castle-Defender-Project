@@ -1,0 +1,8 @@
+# Build artifacts
+/castle_defender*
+/castle_defender*.exe
+/Header/*.exe
+/Sources/*.exe
+
+# IDE state
+/.vs/
