@@ -27,4 +27,4 @@ private:
     std::function<std::optional<EnemyType>(std::size_t,std::size_t)> enemyLookup_;
 };
 
-#endif // GAMEVIEW_H
+#endif

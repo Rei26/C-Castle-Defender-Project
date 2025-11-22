@@ -89,4 +89,4 @@ private:
     static void TimerCB(void* userdata);
 };
 
-#endif // GUIGAME_H
+#endif

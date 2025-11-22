@@ -46,4 +46,4 @@ private:
     std::size_t idx(std::size_t r, std::size_t c) const { return r * cols_ + c; }
 };
 
-#endif // GRID_H
+#endif

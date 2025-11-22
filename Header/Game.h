@@ -50,4 +50,4 @@ private:
     void showGameOver(bool playerWon) const;
 };
 
-#endif // GAME_H
+#endif

@@ -35,4 +35,4 @@ private:
     EnemyType type_{EnemyType::Basic};
 };
 
-#endif // ENEMY_H
+#endif

@@ -28,4 +28,4 @@ private:
     int damage_{2};
 };
 
-#endif // TOWER_H
+#endif

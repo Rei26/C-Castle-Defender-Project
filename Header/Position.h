@@ -8,5 +8,4 @@ struct Position {
     std::size_t c{0};
 };
 
-#endif // POSITION_H
-
+#endif

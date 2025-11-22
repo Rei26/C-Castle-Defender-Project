@@ -56,4 +56,4 @@ private:
     Enemy makeEnemy(std::size_t column);
 };
 
-#endif // AICONTROLLER_H
+#endif

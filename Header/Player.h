@@ -25,7 +25,7 @@ public:
             if (r == 0) { std::cout << "Top row is reserved for spawns.\n"; continue; }
             if (r == castle.pos().r && c == castle.pos().c) { std::cout << "Cannot place on castle.\n"; continue; }
 
-            Tower t(r, c, /*range*/3, /*damage*/2);
+            Tower t(r, c, 3, 2);
             towers.push_back(t);
             grid.placeTower(r, c);
             ++placed;
@@ -33,5 +33,5 @@ public:
     }
 };
 
-#endif // PLAYER_H
+#endif
 

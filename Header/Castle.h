@@ -20,4 +20,4 @@ private:
     int hp_{100};
 };
 
-#endif // CASTLE_H
+#endif
