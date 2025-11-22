@@ -1,7 +1,4 @@
-#!/usr/bin/env bash
 set -euo pipefail
-
-# Find the newest installed cpptools extension and reuse its bundled lldb-mi.
 extension_dir="$(ls -1dt "${HOME}"/.vscode/extensions/ms-vscode.cpptools-* 2>/dev/null | head -n 1 || true)"
 
 if [[ -z "${extension_dir}" ]]; then

@@ -53,13 +53,13 @@ int main(int argc, char** argv) {
     btnUDmg.callback([](Fl_Widget*, void* ud){
         auto* e = static_cast<GuiGame*>(ud);
         e->stopAuto();
-        e->setUpgradeTypePublic(false); // damage
+        e->setUpgradeTypePublic(false);
     }, &engine);
 
     btnURng.callback([](Fl_Widget*, void* ud){
         auto* e = static_cast<GuiGame*>(ud);
         e->stopAuto();
-        e->setUpgradeTypePublic(true); // range
+        e->setUpgradeTypePublic(true);
     }, &engine);
 
     view.setOnClick([&](std::size_t r, std::size_t c){
