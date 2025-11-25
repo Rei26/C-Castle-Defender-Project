@@ -1,5 +1,6 @@
 #include "GameView.h"
 #include <FL/fl_draw.H>
+using namespace std;
 
 GameView::GameView(int X, int Y, int W, int H, Grid& grid, int cellPx)
     : Fl_Widget(X, Y, W, H), grid_(grid), cellPx_(cellPx) {}
@@ -9,8 +10,8 @@ void GameView::draw() {
     fl_color(FL_WHITE);
     fl_rectf(x(), y(), w(), h());
 
-    for (std::size_t r = 0; r < grid_.rows(); ++r) {
-        for (std::size_t c = 0; c < grid_.cols(); ++c) {
+    for (size_t r = 0; r < grid_.rows(); ++r) {
+        for (size_t c = 0; c < grid_.cols(); ++c) {
             int cx = x() + static_cast<int>(c) * cellPx_;
             int cy = y() + static_cast<int>(r) * cellPx_;
             int cw = cellPx_;
@@ -50,8 +51,8 @@ int GameView::handle(int event) {
             int mx = Fl::event_x();
             int my = Fl::event_y();
             if (mx < x() || my < y() || mx >= x() + w() || my >= y() + h()) return 0;
-            std::size_t c = static_cast<std::size_t>((mx - x()) / cellPx_);
-            std::size_t r = static_cast<std::size_t>((my - y()) / cellPx_);
+            size_t c = static_cast<size_t>((mx - x()) / cellPx_);
+            size_t r = static_cast<size_t>((my - y()) / cellPx_);
             onClick_(r, c);
             return 1;
         }

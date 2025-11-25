@@ -3,6 +3,7 @@
 #include <algorithm>
 #include <chrono>
 #include <limits>
+using namespace std;
 
 namespace {
 bool useAsciiSymbols() {
@@ -21,7 +22,7 @@ Game::Game()
       ascii_(useAsciiSymbols()) {
     grid_.setCastle(castle_.pos().r, castle_.pos().c);
     rng_.seed(static_cast<unsigned int>(
-        std::chrono::high_resolution_clock::now().time_since_epoch().count()));
+        chrono::high_resolution_clock::now().time_since_epoch().count()));
 }
 
 void Game::rebuildGrid() {
@@ -35,7 +36,7 @@ void Game::rebuildGrid() {
     }
 }
 
-std::string Game::cellSymbol(std::size_t r, std::size_t c) const {
+string Game::cellSymbol(size_t r, size_t c) const {
     if (ascii_) {
         switch (grid_.at(r, c)) {
             case Cell::Empty:   return ".";
@@ -57,19 +58,19 @@ std::string Game::cellSymbol(std::size_t r, std::size_t c) const {
 }
 
 void Game::printGrid() const {
-    for (std::size_t r = 0; r < grid_.rows(); ++r) {
-        for (std::size_t c = 0; c < grid_.cols(); ++c) {
-            std::cout << cellSymbol(r, c) << ' ';
+    for (size_t r = 0; r < grid_.rows(); ++r) {
+        for (size_t c = 0; c < grid_.cols(); ++c) {
+            cout << cellSymbol(r, c) << ' ';
         }
-        std::cout << '\n';
+        cout << '\n';
     }
 }
 
 void Game::ensureWaveReady() {
     if (!waitingForWave_ || !ai_.hasMoreWaves()) return;
-    std::cout << "\nWave " << ai_.currentWaveNumber() << " ready. Press Enter to launch.";
-    std::string line;
-    std::getline(std::cin, line);
+    cout << "\nWave " << ai_.currentWaveNumber() << " ready. Press Enter to launch.";
+    string line;
+    getline(cin, line);
     ai_.startNextWave();
     waitingForWave_ = false;
     currentWaveScore_ = 0;
@@ -78,47 +79,47 @@ void Game::ensureWaveReady() {
 
 void Game::performUpgrades() {
     int points = 1;
-    std::cout << "\nUpgrade phase: " << points << " point available." << std::endl;
+    cout << "\nUpgrade phase: " << points << " point available." << endl;
     while (points > 0) {
-        std::cout << "Choose tower row col (1-based, 0 0 to skip): ";
+        cout << "Choose tower row col (1-based, 0 0 to skip): ";
         long rr, cc;
-        if (!(std::cin >> rr >> cc)) {
-            std::cin.clear();
-            std::cin.ignore(1024, '\n');
+        if (!(cin >> rr >> cc)) {
+            cin.clear();
+            cin.ignore(1024, '\n');
             continue;
         }
         if (rr == 0 && cc == 0) break;
         if (rr < 1 || cc < 1) {
-            std::cout << "Use positive coordinates.\n";
+            cout << "Use positive coordinates.\n";
             continue;
         }
-        std::size_t r = static_cast<std::size_t>(rr - 1);
-        std::size_t c = static_cast<std::size_t>(cc - 1);
-        auto it = std::find_if(towers_.begin(), towers_.end(), [&](const Tower& t){ return t.pos().r == r && t.pos().c == c; });
+        size_t r = static_cast<size_t>(rr - 1);
+        size_t c = static_cast<size_t>(cc - 1);
+        auto it = find_if(towers_.begin(), towers_.end(), [&](const Tower& t){ return t.pos().r == r && t.pos().c == c; });
         if (it == towers_.end()) {
-            std::cout << "No tower at that location.\n";
+            cout << "No tower at that location.\n";
             continue;
         }
-        std::cout << "Upgrade (d=damage, r=range): ";
+        cout << "Upgrade (d=damage, r=range): ";
         char choice;
-        std::cin >> choice;
+        cin >> choice;
         if (choice == 'd' || choice == 'D') {
             const_cast<Tower&>(*it).upgradeDamage();
             --points;
-            std::cout << "Damage increased.\n";
+            cout << "Damage increased.\n";
         } else if (choice == 'r' || choice == 'R') {
             const_cast<Tower&>(*it).upgradeRange();
             --points;
-            std::cout << "Range increased.\n";
+            cout << "Range increased.\n";
         } else {
-            std::cout << "Invalid choice.\n";
+            cout << "Invalid choice.\n";
         }
     }
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 }
 
 void Game::moveEnemies() {
-    std::vector<std::vector<bool>> occupied(ROWS, std::vector<bool>(COLS, false));
+    vector<vector<bool>> occupied(ROWS, vector<bool>(COLS, false));
     for (const auto& t : towers_) {
         occupied[t.pos().r][t.pos().c] = true;
     }
@@ -133,7 +134,7 @@ void Game::moveEnemies() {
         if (e.pos().r < ROWS && e.pos().c < COLS)
             occupied[e.pos().r][e.pos().c] = false;
         for (int step = 0; step < e.speed(); ++step) {
-            std::size_t nextR = e.pos().r + 1;
+            size_t nextR = e.pos().r + 1;
             if (nextR >= ROWS) { e.pos().r = nextR; break; }
             if (!occupied[nextR][e.pos().c]) {
                 e.pos().r = nextR;
@@ -144,7 +145,7 @@ void Game::moveEnemies() {
             bool moved = false;
             for (int d : dirs) {
                 if ((d < 0 && e.pos().c == 0) || (d > 0 && e.pos().c + 1 >= COLS)) continue;
-                std::size_t newC = static_cast<std::size_t>(static_cast<int>(e.pos().c) + d);
+                size_t newC = static_cast<size_t>(static_cast<int>(e.pos().c) + d);
                 if (!occupied[nextR][newC]) {
                     e.pos().r = nextR;
                     e.pos().c = newC;
@@ -163,31 +164,31 @@ void Game::waveCompleted(bool excellent) {
     waitingForWave_ = ai_.hasMoreWaves();
     currentWaveScore_ = 0;
     currentWaveMaxScore_ = 0;
-    std::cout << "\n--- Wave complete ---";
-    if (excellent) std::cout << " (Enemy HP increased!)";
-    std::cout << '\n';
+    cout << "\n--- Wave complete ---";
+    if (excellent) cout << " (Enemy HP increased!)";
+    cout << '\n';
     performUpgrades();
     rebuildGrid();
     printGrid();
 }
 
 void Game::showGameOver(bool playerWon) const {
-    std::cout << "\nGAME OVER\n";
-    std::cout << "Player Score: " << score_ << '\n';
-    std::cout << "Enemies Destroyed: " << enemiesDestroyed_ << '\n';
-    std::cout << "Castle Health: " << castle_.hp() << '\n';
-    std::cout << "Winner: " << (playerWon ? "Player" : "AI") << '\n';
+    cout << "\nGAME OVER\n";
+    cout << "Player Score: " << score_ << '\n';
+    cout << "Enemies Destroyed: " << enemiesDestroyed_ << '\n';
+    cout << "Castle Health: " << castle_.hp() << '\n';
+    cout << "Winner: " << (playerWon ? "Player" : "AI") << '\n';
 }
 
 void Game::run() {
-    std::cout << "\n=== Castle Defender (Console) ===\n";
-    std::cout << "Board: " << ROWS << "x" << COLS << "\n";
-    std::cout << "Place exactly " << TOWERS_TO_PLACE << " towers.\n";
+    cout << "\n=== Castle Defender (Console) ===\n";
+    cout << "Board: " << ROWS << "x" << COLS << "\n";
+    cout << "Place exactly " << TOWERS_TO_PLACE << " towers.\n";
 
     rebuildGrid();
     printGrid();
     player_.placeTowers(TOWERS_TO_PLACE, grid_, castle_, towers_);
-    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    cin.ignore(numeric_limits<streamsize>::max(), '\n');
 
     while (castle_.alive() && (!ai_.allWavesFinished() || !enemies_.empty())) {
         ensureWaveReady();
@@ -204,7 +205,7 @@ void Game::run() {
         }
 
         int destroyedThisTurn = 0;
-        enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(), [&](const Enemy& e){
+        enemies_.erase(remove_if(enemies_.begin(), enemies_.end(), [&](const Enemy& e){
             if (!e.alive()) { ++destroyedThisTurn; score_ += SCORE_PER_ENEMY; return true; }
             return false;
         }), enemies_.end());
@@ -217,7 +218,7 @@ void Game::run() {
         moveEnemies();
 
         int totalDamage = 0;
-        enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(), [&](const Enemy& e){
+        enemies_.erase(remove_if(enemies_.begin(), enemies_.end(), [&](const Enemy& e){
             if (e.pos().r >= castle_.pos().r) {
                 totalDamage += e.attack();
                 return true;
@@ -230,8 +231,8 @@ void Game::run() {
         }
 
         rebuildGrid();
-        std::cout << "\nTurn " << turn_ << " | Castle HP: " << castle_.hp() << " | Score: " << score_;
-        std::cout << " | Wave: " << ai_.currentWaveNumber() << "\n";
+        cout << "\nTurn " << turn_ << " | Castle HP: " << castle_.hp() << " | Score: " << score_;
+        cout << " | Wave: " << ai_.currentWaveNumber() << "\n";
         printGrid();
 
         if (!castle_.alive()) {
@@ -244,11 +245,11 @@ void Game::run() {
             continue;
         }
 
-        std::cout << "Press Enter for next turn (q + Enter to quit): ";
-        std::string line;
-        std::getline(std::cin, line);
+        cout << "Press Enter for next turn (q + Enter to quit): ";
+        string line;
+        getline(cin, line);
         if (!line.empty() && (line[0] == 'q' || line[0] == 'Q')) {
-            std::cout << "\nExiting early.\n";
+            cout << "\nExiting early.\n";
             break;
         }
     }

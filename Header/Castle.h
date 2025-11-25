@@ -3,10 +3,11 @@
 
 #include <cstddef>
 #include "Position.h"
+using namespace std;
 
 class Castle {
 public:
-    Castle(std::size_t r, std::size_t c, int hp)
+    Castle(size_t r, size_t c, int hp)
         : pos_{r, c}, hp_(hp) {}
 
     const Position& pos() const { return pos_; }

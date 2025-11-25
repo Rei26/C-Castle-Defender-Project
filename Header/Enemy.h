@@ -3,6 +3,7 @@
 
 #include <cstddef>
 #include "Position.h"
+using namespace std;
 
 enum class EnemyType : unsigned char {
     Basic,
@@ -12,7 +13,7 @@ enum class EnemyType : unsigned char {
 
 class Enemy {
 public:
-    Enemy(std::size_t r, std::size_t c, int hp, int atk, int spd, EnemyType type)
+    Enemy(size_t r, size_t c, int hp, int atk, int spd, EnemyType type)
         : pos_{r, c}, hp_(hp), attack_(atk), speed_(spd), type_(type) {}
 
     const Position& pos() const { return pos_; }
@@ -25,7 +26,7 @@ public:
     bool alive() const { return hp_ > 0; }
 
     void takeDamage(int dmg) { hp_ -= dmg; }
-    void stepDown() { pos_.r += static_cast<std::size_t>(speed_); }
+    void stepDown() { pos_.r += static_cast<size_t>(speed_); }
 
 private:
     Position pos_{};

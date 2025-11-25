@@ -10,6 +10,7 @@
 #include "Enemy.h"
 #include "AIController.h"
 #include "Player.h"
+using namespace std;
 
 class Game {
 public:
@@ -17,16 +18,16 @@ public:
     void run();
 
 private:
-    static constexpr std::size_t ROWS = 20;
-    static constexpr std::size_t COLS = 20;
+    static constexpr size_t ROWS = 20;
+    static constexpr size_t COLS = 20;
     static constexpr int STARTING_CASTLE_HP = 100;
     static constexpr int TOWERS_TO_PLACE = 5;
     static constexpr int SCORE_PER_ENEMY = 10;
 
     Grid grid_;
     Castle castle_;
-    std::vector<Tower> towers_;
-    std::vector<Enemy> enemies_;
+    vector<Tower> towers_;
+    vector<Enemy> enemies_;
     AIController ai_;
     Player player_;
 
@@ -38,11 +39,11 @@ private:
     int currentWaveScore_{0};
     int currentWaveMaxScore_{0};
 
-    std::mt19937 rng_;
+    mt19937 rng_;
 
     void rebuildGrid();
     void printGrid() const;
-    std::string cellSymbol(std::size_t r, std::size_t c) const;
+    string cellSymbol(size_t r, size_t c) const;
     void ensureWaveReady();
     void performUpgrades();
     void moveEnemies();

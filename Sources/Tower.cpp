@@ -1,16 +1,17 @@
 #include "Tower.h"
 #include <limits>
+using namespace std;
 
-static inline int manhattan(std::size_t r1, std::size_t c1, std::size_t r2, std::size_t c2) {
-    std::size_t dr = (r1 > r2) ? (r1 - r2) : (r2 - r1);
-    std::size_t dc = (c1 > c2) ? (c1 - c2) : (c2 - c1);
+static inline int manhattan(size_t r1, size_t c1, size_t r2, size_t c2) {
+    size_t dr = (r1 > r2) ? (r1 - r2) : (r2 - r1);
+    size_t dc = (c1 > c2) ? (c1 - c2) : (c2 - c1);
     return static_cast<int>(dr + dc);
 }
 
-std::optional<std::size_t> Tower::pickTarget(const std::vector<Enemy>& enemies) const {
-    int bestDist = std::numeric_limits<int>::max();
-    std::optional<std::size_t> bestIdx;
-    for (std::size_t i = 0; i < enemies.size(); ++i) {
+optional<size_t> Tower::pickTarget(const vector<Enemy>& enemies) const {
+    int bestDist = numeric_limits<int>::max();
+    optional<size_t> bestIdx;
+    for (size_t i = 0; i < enemies.size(); ++i) {
         if (!enemies[i].alive()) continue;
         int d = manhattan(pos_.r, pos_.c, enemies[i].pos().r, enemies[i].pos().c);
         if (d <= range_) {
@@ -27,7 +28,7 @@ std::optional<std::size_t> Tower::pickTarget(const std::vector<Enemy>& enemies) 
     return bestIdx;
 }
 
-void Tower::fire(std::vector<Enemy>& enemies) const {
+void Tower::fire(vector<Enemy>& enemies) const {
     auto target = pickTarget(enemies);
     if (target.has_value()) {
         enemies[target.value()].takeDamage(damage_);

@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <chrono>
 #include <FL/fl_ask.H>
+using namespace std;
 
 GuiGame::GuiGame()
     : grid_(ROWS, COLS),
@@ -12,13 +13,13 @@ GuiGame::GuiGame()
       ai_(0, COLS) {
     grid_.setCastle(castle_.pos().r, castle_.pos().c);
     rng_.seed(static_cast<unsigned int>(
-        std::chrono::high_resolution_clock::now().time_since_epoch().count()));
+        chrono::high_resolution_clock::now().time_since_epoch().count()));
 }
 
 void GuiGame::attachView(GameView* view) {
     view_ = view;
     if (!view_) return;
-    view_->setEnemyLookup([this](std::size_t r, std::size_t c){ return lookupEnemy(r, c); });
+    view_->setEnemyLookup([this](size_t r, size_t c){ return lookupEnemy(r, c); });
 }
 
 void GuiGame::rebuildGrid() {
@@ -32,7 +33,7 @@ void GuiGame::rebuildGrid() {
     }
 }
 
-bool GuiGame::canPlaceTower(std::size_t r, std::size_t c) const {
+bool GuiGame::canPlaceTower(size_t r, size_t c) const {
     if (!grid_.inBounds(r, c)) return false;
     if (grid_.at(r, c) != Cell::Empty) return false;
     if (r == 0) return false;
@@ -40,15 +41,15 @@ bool GuiGame::canPlaceTower(std::size_t r, std::size_t c) const {
     return true;
 }
 
-std::optional<EnemyType> GuiGame::lookupEnemy(std::size_t r, std::size_t c) const {
+optional<EnemyType> GuiGame::lookupEnemy(size_t r, size_t c) const {
     for (const auto& e : enemies_) {
         if (!e.alive()) continue;
         if (e.pos().r == r && e.pos().c == c) return e.type();
     }
-    return std::nullopt;
+    return nullopt;
 }
 
-bool GuiGame::onCellClick(std::size_t r, std::size_t c) {
+bool GuiGame::onCellClick(size_t r, size_t c) {
     if (finished_) return false;
     if (upgradeMode_) return tryUpgradeAt(r, c);
     if (towers_.size() >= TOWERS_TO_PLACE) return false;
@@ -62,17 +63,17 @@ bool GuiGame::onCellClick(std::size_t r, std::size_t c) {
 
 void GuiGame::updateStatus() {
     if (!status_) return;
-    statusText_ = "Turn: " + std::to_string(turn_);
-    statusText_ += "  Score: " + std::to_string(score_);
-    statusText_ += "  Castle HP: " + std::to_string(castle_.hp());
-    statusText_ += "  Towers: " + std::to_string(towers_.size()) + "/" + std::to_string(TOWERS_TO_PLACE);
-    statusText_ += "  Wave: " + std::to_string(ai_.currentWaveNumber()) + "/" + std::to_string(ai_.totalWaves());
+    statusText_ = "Turn: " + to_string(turn_);
+    statusText_ += "  Score: " + to_string(score_);
+    statusText_ += "  Castle HP: " + to_string(castle_.hp());
+    statusText_ += "  Towers: " + to_string(towers_.size()) + "/" + to_string(TOWERS_TO_PLACE);
+    statusText_ += "  Wave: " + to_string(ai_.currentWaveNumber()) + "/" + to_string(ai_.totalWaves());
     if (running_) statusText_ += "  (Auto)";
     if (waitingForWave_) statusText_ += "  [Waiting for wave]";
     if (upgradeMode_) {
         statusText_ += "  [UPGRADE]";
         statusText_ += upgradeRangeMode_ ? " (Range)" : " (Damage)";
-        statusText_ += " Pts:" + std::to_string(upgradePoints_);
+        statusText_ += " Pts:" + to_string(upgradePoints_);
     }
     status_->label(statusText_.c_str());
     status_->redraw();
@@ -108,7 +109,7 @@ void GuiGame::nextButtonAction() {
 }
 
 void GuiGame::moveEnemies() {
-    std::vector<std::vector<bool>> occupied(ROWS, std::vector<bool>(COLS, false));
+    vector<vector<bool>> occupied(ROWS, vector<bool>(COLS, false));
     for (const auto& t : towers_) occupied[t.pos().r][t.pos().c] = true;
     for (const auto& e : enemies_) {
         if (e.pos().r < ROWS && e.pos().c < COLS) occupied[e.pos().r][e.pos().c] = true;
@@ -120,7 +121,7 @@ void GuiGame::moveEnemies() {
         if (e.pos().r < ROWS && e.pos().c < COLS)
             occupied[e.pos().r][e.pos().c] = false;
         for (int step = 0; step < e.speed(); ++step) {
-            std::size_t nextR = e.pos().r + 1;
+            size_t nextR = e.pos().r + 1;
             if (nextR >= ROWS) { e.pos().r = nextR; break; }
             if (!occupied[nextR][e.pos().c]) {
                 e.pos().r = nextR;
@@ -131,7 +132,7 @@ void GuiGame::moveEnemies() {
             bool moved = false;
             for (int d : dirs) {
                 if ((d < 0 && e.pos().c == 0) || (d > 0 && e.pos().c + 1 >= COLS)) continue;
-                std::size_t newC = static_cast<std::size_t>(static_cast<int>(e.pos().c) + d);
+                size_t newC = static_cast<size_t>(static_cast<int>(e.pos().c) + d);
                 if (!occupied[nextR][newC]) {
                     e.pos().r = nextR;
                     e.pos().c = newC;
@@ -172,9 +173,9 @@ void GuiGame::beginUpgradePhase(int points) {
     updateStatus();
 }
 
-bool GuiGame::tryUpgradeAt(std::size_t r, std::size_t c) {
+bool GuiGame::tryUpgradeAt(size_t r, size_t c) {
     if (!upgradeMode_ || upgradePoints_ <= 0) return false;
-    auto it = std::find_if(towers_.begin(), towers_.end(), [&](const Tower& t){ return t.pos().r == r && t.pos().c == c; });
+    auto it = find_if(towers_.begin(), towers_.end(), [&](const Tower& t){ return t.pos().r == r && t.pos().c == c; });
     if (it == towers_.end()) return false;
     if (upgradeRangeMode_) const_cast<Tower&>(*it).upgradeRange();
     else const_cast<Tower&>(*it).upgradeDamage();
@@ -207,7 +208,7 @@ void GuiGame::showGameOver(bool playerWon) {
     running_ = false;
     waitingForWave_ = false;
     char buf[256];
-    std::snprintf(buf, sizeof(buf),
+    snprintf(buf, sizeof(buf),
                   "GAME OVER\nPlayer Score: %d\nEnemies Destroyed: %d\nCastle Health: %d\nWinner: %s",
                   score_, enemiesDestroyed_, castle_.hp(), playerWon ? "Player" : "AI");
     fl_message("%s", buf);
@@ -238,7 +239,7 @@ void GuiGame::stepTurn() {
     }
 
     int destroyedThisTurn = 0;
-    enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(), [&](const Enemy& e){
+    enemies_.erase(remove_if(enemies_.begin(), enemies_.end(), [&](const Enemy& e){
         if (!e.alive()) { ++destroyedThisTurn; return true; }
         return false;
     }), enemies_.end());
@@ -252,7 +253,7 @@ void GuiGame::stepTurn() {
     moveEnemies();
 
     int totalDamage = 0;
-    enemies_.erase(std::remove_if(enemies_.begin(), enemies_.end(), [&](const Enemy& e){
+    enemies_.erase(remove_if(enemies_.begin(), enemies_.end(), [&](const Enemy& e){
         if (e.pos().r >= castle_.pos().r) {
             totalDamage += e.attack();
             return true;

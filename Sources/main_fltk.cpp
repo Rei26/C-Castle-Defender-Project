@@ -4,6 +4,7 @@
 #include <FL/Fl_Box.H>
 #include "GuiGame.h"
 #include "GameView.h"
+using namespace std;
 
 int main(int argc, char** argv) {
     const int cellPx = 32;
@@ -62,7 +63,7 @@ int main(int argc, char** argv) {
         e->setUpgradeTypePublic(true);
     }, &engine);
 
-    view.setOnClick([&](std::size_t r, std::size_t c){
+    view.setOnClick([&](size_t r, size_t c){
         return engine.onCellClick(r, c);
     });
 

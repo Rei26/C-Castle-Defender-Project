@@ -12,13 +12,14 @@
 #include "Tower.h"
 #include "Enemy.h"
 #include "AIController.h"
+using namespace std;
 
 class GameView;
 
 class GuiGame {
 public:
-    static constexpr std::size_t ROWS = 20;
-    static constexpr std::size_t COLS = 20;
+    static constexpr size_t ROWS = 20;
+    static constexpr size_t COLS = 20;
     static constexpr int STARTING_CASTLE_HP = 100;
     static constexpr int TOWERS_TO_PLACE = 5;
     static constexpr int SCORE_PER_ENEMY = 10;
@@ -35,7 +36,7 @@ public:
     bool startNextWave();
     void nextButtonAction();
 
-    bool onCellClick(std::size_t r, std::size_t c);
+    bool onCellClick(size_t r, size_t c);
 
     void stepTurn();
 
@@ -52,8 +53,8 @@ public:
 private:
     Grid grid_;
     Castle castle_;
-    std::vector<Tower> towers_;
-    std::vector<Enemy> enemies_;
+    vector<Tower> towers_;
+    vector<Enemy> enemies_;
     AIController ai_;
 
     int score_{0};
@@ -69,22 +70,22 @@ private:
     int currentWaveScore_{0};
     int currentWaveMax_{0};
 
-    std::mt19937 rng_;
-    std::string statusText_;
+    mt19937 rng_;
+    string statusText_;
 
     GameView* view_{nullptr};
     Fl_Box* status_{nullptr};
 
     void rebuildGrid();
     void updateStatus();
-    bool canPlaceTower(std::size_t r, std::size_t c) const;
+    bool canPlaceTower(size_t r, size_t c) const;
     bool checkVictoryOrDefeat();
     void beginUpgradePhase(int points);
-    bool tryUpgradeAt(std::size_t r, std::size_t c);
+    bool tryUpgradeAt(size_t r, size_t c);
     void moveEnemies();
     void handleWaveCompletion();
     void showGameOver(bool playerWon);
-    std::optional<EnemyType> lookupEnemy(std::size_t r, std::size_t c) const;
+    optional<EnemyType> lookupEnemy(size_t r, size_t c) const;
 
     static void TimerCB(void* userdata);
 };

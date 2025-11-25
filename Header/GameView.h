@@ -7,14 +7,15 @@
 #include <optional>
 #include "Grid.h"
 #include "Enemy.h"
+using namespace std;
 
 class GameView : public Fl_Widget {
 public:
     GameView(int X, int Y, int W, int H, Grid& grid, int cellPx);
 
     void setCellSize(int px) { cellPx_ = px; redraw(); }
-    void setOnClick(std::function<bool(std::size_t,std::size_t)> cb) { onClick_ = std::move(cb); }
-    void setEnemyLookup(std::function<std::optional<EnemyType>(std::size_t,std::size_t)> cb) { enemyLookup_ = std::move(cb); }
+    void setOnClick(function<bool(size_t,size_t)> cb) { onClick_ = move(cb); }
+    void setEnemyLookup(function<optional<EnemyType>(size_t,size_t)> cb) { enemyLookup_ = move(cb); }
 
 protected:
     void draw() override;
@@ -23,8 +24,8 @@ protected:
 private:
     Grid& grid_;
     int cellPx_;
-    std::function<bool(std::size_t,std::size_t)> onClick_;
-    std::function<std::optional<EnemyType>(std::size_t,std::size_t)> enemyLookup_;
+    function<bool(size_t,size_t)> onClick_;
+    function<optional<EnemyType>(size_t,size_t)> enemyLookup_;
 };
 
 #endif

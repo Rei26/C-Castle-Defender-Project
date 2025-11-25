@@ -2,10 +2,11 @@
 #define POSITION_H
 
 #include <cstddef>
+using namespace std;
 
 struct Position {
-    std::size_t r{0};
-    std::size_t c{0};
+    size_t r{0};
+    size_t c{0};
 };
 
 #endif
