@@ -13,7 +13,8 @@ Overview
 Prerequisites
 -------------
 - C++ Compilter
--FLTK library
+- FLTK library
+- MSYS2 UCRT64 toolchain with `g++`, `fltk-config`, and `gdb` (install via `pacman -S --needed mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-fltk mingw-w64-ucrt-x86_64-gdb`)
 
 How to Build (console)
 ----------------------
