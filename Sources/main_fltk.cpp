@@ -7,6 +7,7 @@
 using namespace std;
 
 int main(int argc, char** argv) {
+    // Boot the FLTK GUI version.
     const int cellPx = 32;
     const int winW = static_cast<int>(GuiGame::COLS * cellPx);
     const int winH = static_cast<int>(GuiGame::ROWS * cellPx + 60);

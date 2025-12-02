@@ -5,6 +5,7 @@
 #include "Position.h"
 using namespace std;
 
+// Player base that loses when its HP drops to zero.
 class Castle {
 public:
     Castle(size_t r, size_t c, int hp)

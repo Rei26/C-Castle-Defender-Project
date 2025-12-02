@@ -12,9 +12,9 @@ Overview
 
 Prerequisites
 -------------
-- C++ Compilter
-- FLTK library
-- MSYS2 UCRT64 toolchain with `g++`, `fltk-config`, and `gdb` (install via `pacman -S --needed mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-fltk mingw-w64-ucrt-x86_64-gdb`)
+- C++17-capable compiler (tested with `g++` from MSYS2 UCRT64; MSVC 2019+ should also work for console builds).
+- FLTK library (only needed for the GUI target; console build does not require it).
+- MSYS2 UCRT64 toolchain with `g++`, `fltk-config`, and `gdb` (install via `pacman -S --needed mingw-w64-ucrt-x86_64-gcc mingw-w64-ucrt-x86_64-fltk mingw-w64-ucrt-x86_64-gdb`) and ensure the UCRT64 shell is used so `fltk-config` is on PATH.
 
 How to Build (console)
 ----------------------

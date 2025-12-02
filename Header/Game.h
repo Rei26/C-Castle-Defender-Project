@@ -12,12 +12,14 @@
 #include "Player.h"
 using namespace std;
 
+// Console-mode game engine: drives waves, scoring, and user input loop.
 class Game {
 public:
     Game();
     void run();
 
 private:
+    // Core board configuration and scoring constants.
     static constexpr size_t ROWS = 20;
     static constexpr size_t COLS = 20;
     static constexpr int STARTING_CASTLE_HP = 100;

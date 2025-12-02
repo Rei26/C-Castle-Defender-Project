@@ -9,6 +9,7 @@ static inline int manhattan(size_t r1, size_t c1, size_t r2, size_t c2) {
 }
 
 optional<size_t> Tower::pickTarget(const vector<Enemy>& enemies) const {
+    // Prefer the closest enemy; break ties by who is farther down the board.
     int bestDist = numeric_limits<int>::max();
     optional<size_t> bestIdx;
     for (size_t i = 0; i < enemies.size(); ++i) {

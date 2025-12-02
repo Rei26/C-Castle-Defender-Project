@@ -16,6 +16,7 @@ using namespace std;
 
 class GameView;
 
+// FLTK-fronted game controller mirroring the console Game flow.
 class GuiGame {
 public:
     static constexpr size_t ROWS = 20;

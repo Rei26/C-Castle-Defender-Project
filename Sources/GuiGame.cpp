@@ -19,10 +19,12 @@ GuiGame::GuiGame()
 void GuiGame::attachView(GameView* view) {
     view_ = view;
     if (!view_) return;
+    // Provide a way for the view to color enemies by type.
     view_->setEnemyLookup([this](size_t r, size_t c){ return lookupEnemy(r, c); });
 }
 
 void GuiGame::rebuildGrid() {
+    // Refill the grid representation from current entities.
     grid_.clear();
     grid_.setCastle(castle_.pos().r, castle_.pos().c);
     for (const auto& t : towers_) {
@@ -36,7 +38,7 @@ void GuiGame::rebuildGrid() {
 bool GuiGame::canPlaceTower(size_t r, size_t c) const {
     if (!grid_.inBounds(r, c)) return false;
     if (grid_.at(r, c) != Cell::Empty) return false;
-    if (r == 0) return false;
+    if (r <= 1) return false;
     if (r == castle_.pos().r && c == castle_.pos().c) return false;
     return true;
 }
@@ -63,6 +65,7 @@ bool GuiGame::onCellClick(size_t r, size_t c) {
 
 void GuiGame::updateStatus() {
     if (!status_) return;
+    // Compose a compact status line for the HUD.
     statusText_ = "Turn: " + to_string(turn_);
     statusText_ += "  Score: " + to_string(score_);
     statusText_ += "  Castle HP: " + to_string(castle_.hp());
@@ -109,6 +112,7 @@ void GuiGame::nextButtonAction() {
 }
 
 void GuiGame::moveEnemies() {
+    // Same movement rules as console version: step down, dodge sideways if blocked.
     vector<vector<bool>> occupied(ROWS, vector<bool>(COLS, false));
     for (const auto& t : towers_) occupied[t.pos().r][t.pos().c] = true;
     for (const auto& e : enemies_) {
@@ -230,6 +234,7 @@ void GuiGame::stepTurn() {
     if (finished_ || waitingForWave_) return;
     if (towers_.size() < TOWERS_TO_PLACE) return;
 
+    // One GUI tick: spawn, towers fire, move, resolve castle hits.
     ++turn_;
     rebuildGrid();
     ai_.advanceTurn(grid_, towers_, enemies_);

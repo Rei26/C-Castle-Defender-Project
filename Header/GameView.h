@@ -13,6 +13,7 @@ class GameView : public Fl_Widget {
 public:
     GameView(int X, int Y, int W, int H, Grid& grid, int cellPx);
 
+    // Configure rendering scale and UI callbacks.
     void setCellSize(int px) { cellPx_ = px; redraw(); }
     void setOnClick(function<bool(size_t,size_t)> cb) { onClick_ = move(cb); }
     void setEnemyLookup(function<optional<EnemyType>(size_t,size_t)> cb) { enemyLookup_ = move(cb); }

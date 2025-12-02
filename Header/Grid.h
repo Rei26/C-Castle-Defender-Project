@@ -13,6 +13,7 @@ enum class Cell : unsigned char {
     Castle
 };
 
+// Lightweight container that tracks board occupancy for towers, enemies, and castle.
 class Grid {
 public:
     Grid(size_t rows, size_t cols);

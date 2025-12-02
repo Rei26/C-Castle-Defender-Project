@@ -26,6 +26,7 @@ Game::Game()
 }
 
 void Game::rebuildGrid() {
+    // Reconstruct visual grid from current entity positions.
     grid_.clear();
     grid_.setCastle(castle_.pos().r, castle_.pos().c);
     for (const auto& t : towers_) {
@@ -78,6 +79,7 @@ void Game::ensureWaveReady() {
 }
 
 void Game::performUpgrades() {
+    // Simple one-point upgrade phase between waves.
     int points = 1;
     cout << "\nUpgrade phase: " << points << " point available." << endl;
     while (points > 0) {
@@ -119,6 +121,7 @@ void Game::performUpgrades() {
 }
 
 void Game::moveEnemies() {
+    // Enemies step down each turn; if blocked they attempt a lateral dodge.
     vector<vector<bool>> occupied(ROWS, vector<bool>(COLS, false));
     for (const auto& t : towers_) {
         occupied[t.pos().r][t.pos().c] = true;
@@ -196,6 +199,7 @@ void Game::run() {
             break;
         }
 
+        // One logical turn: spawn, fire, move, and resolve castle damage.
         ++turn_;
         rebuildGrid();
         ai_.advanceTurn(grid_, towers_, enemies_);

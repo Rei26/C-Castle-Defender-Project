@@ -11,6 +11,7 @@ enum class EnemyType : unsigned char {
     Scout
 };
 
+// Hostile unit marching from the top toward the castle.
 class Enemy {
 public:
     Enemy(size_t r, size_t c, int hp, int atk, int spd, EnemyType type)

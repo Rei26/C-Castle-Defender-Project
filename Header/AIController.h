@@ -13,6 +13,7 @@ class AIController {
 public:
     AIController(size_t topRow, size_t cols);
 
+    // Wave lifecycle and spawning hooks invoked by the game loop.
     void startNextWave();
     void advanceTurn(Grid& grid, const vector<Tower>& towers, vector<Enemy>& enemies);
 
@@ -54,6 +55,7 @@ private:
     int baseHP() const { return 3 + extraHP_ + max(0, currentWave_ - 1); }
     bool spawnEnemy(Grid& grid, const vector<Tower>& towers, vector<Enemy>& enemies);
     size_t pickColumn(const Grid& grid, const vector<Tower>& towers);
+    size_t pickRandomColumn(const Grid& grid);
     Enemy makeEnemy(size_t column);
 };
 

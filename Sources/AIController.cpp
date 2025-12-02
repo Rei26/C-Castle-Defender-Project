@@ -12,12 +12,14 @@ double randUnit(mt19937& rng) {
 
 AIController::AIController(size_t topRow, size_t cols)
     : topRow_(topRow), cols_(cols) {
+    // Seed once per controller instance so runs differ.
     auto seed = static_cast<unsigned int>(
         chrono::high_resolution_clock::now().time_since_epoch().count());
     rng_.seed(seed);
 }
 
 void AIController::startNextWave() {
+    // Only advance if the prior wave is finished and we have waves left.
     if (waveInProgress_ || currentWave_ >= totalWaves_) return;
     ++currentWave_;
     waveInProgress_ = true;
@@ -84,6 +86,7 @@ size_t AIController::pickColumn(const Grid& grid, const vector<Tower>& towers) {
 }
 
 Enemy AIController::makeEnemy(size_t column) {
+    // Mix basic, tanky, and speedy enemies with weighted rolls.
     double roll = randUnit(rng_);
     EnemyType type = EnemyType::Basic;
     int hp = baseHP();
@@ -100,8 +103,20 @@ Enemy AIController::makeEnemy(size_t column) {
     return Enemy(topRow_, column, hp, baseAttack_, speed, type);
 }
 
+size_t AIController::pickRandomColumn(const Grid& grid) {
+    vector<size_t> open;
+    for (size_t c = 0; c < cols_; ++c) {
+        if (grid.isEmpty(topRow_, c)) open.push_back(c);
+    }
+    if (open.empty()) return cols_;
+    size_t idx = static_cast<size_t>(rng_() % open.size());
+    return open[idx];
+}
+
 bool AIController::spawnEnemy(Grid& grid, const vector<Tower>& towers, vector<Enemy>& enemies) {
-    size_t column = pickColumn(grid, towers);
+    bool firstWave = (currentWave_ == 1);
+    // First wave uses pure randomness; later waves bias away from towers.
+    size_t column = firstWave ? pickRandomColumn(grid) : pickColumn(grid, towers);
     if (column >= cols_) return false;
     auto enemy = makeEnemy(column);
     enemies.push_back(enemy);

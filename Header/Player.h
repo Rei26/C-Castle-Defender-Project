@@ -8,6 +8,7 @@
 #include "Castle.h"
 using namespace std;
 
+// Collects user input for initial tower placement in console mode.
 class Player {
 public:
     void placeTowers(int count, Grid& grid, const Castle& castle, vector<Tower>& towers) {
@@ -23,7 +24,7 @@ public:
             size_t c = static_cast<size_t>(cc - 1);
             if (!grid.inBounds(r, c)) { cout << "Out of bounds.\n"; continue; }
             if (grid.at(r, c) != Cell::Empty) { cout << "Cell not empty.\n"; continue; }
-            if (r == 0) { cout << "Top row is reserved for spawns.\n"; continue; }
+            if (r <= 1) { cout << "Top two rows are reserved for spawns.\n"; continue; }
             if (r == castle.pos().r && c == castle.pos().c) { cout << "Cannot place on castle.\n"; continue; }
 
             Tower t(r, c, 3, 2);

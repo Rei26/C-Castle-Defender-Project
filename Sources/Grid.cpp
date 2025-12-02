@@ -45,6 +45,7 @@ bool Grid::removeEnemy(size_t r, size_t c) {
 }
 
 void Grid::clear() {
+    // Reset board while keeping castle anchored if it was set previously.
     fill(data_.begin(), data_.end(), Cell::Empty);
     if (castleSet_) {
         setCell(castleRC_.first, castleRC_.second, Cell::Castle);

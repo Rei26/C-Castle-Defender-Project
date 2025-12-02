@@ -6,6 +6,7 @@ GameView::GameView(int X, int Y, int W, int H, Grid& grid, int cellPx)
     : Fl_Widget(X, Y, W, H), grid_(grid), cellPx_(cellPx) {}
 
 void GameView::draw() {
+    // Paint the grid using simple flat colors per cell type.
     fl_push_clip(x(), y(), w(), h());
     fl_color(FL_WHITE);
     fl_rectf(x(), y(), w(), h());
@@ -48,6 +49,7 @@ int GameView::handle(int event) {
     switch (event) {
         case FL_PUSH: {
             if (!onClick_) return 0;
+            // Translate pixel click into board coordinates.
             int mx = Fl::event_x();
             int my = Fl::event_y();
             if (mx < x() || my < y() || mx >= x() + w() || my >= y() + h()) return 0;

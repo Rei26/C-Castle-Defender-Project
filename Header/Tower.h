@@ -13,10 +13,12 @@ public:
     Tower(size_t r, size_t c, int range, int damage)
         : pos_{r, c}, range_(range), damage_(damage) {}
 
+    // Position and stats accessors.
     const Position& pos() const { return pos_; }
     int range() const { return range_; }
     int damage() const { return damage_; }
 
+    // Choose and attack a target based on Manhattan distance.
     optional<size_t> pickTarget(const vector<Enemy>& enemies) const;
     void fire(vector<Enemy>& enemies) const;
 
