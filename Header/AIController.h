@@ -13,7 +13,7 @@ class AIController {
 public:
     AIController(size_t topRow, size_t cols);
 
-    // Wave lifecycle and spawning hooks invoked by the game loop.
+    // Wave lifecycle and spawning hooks triggered by the game loop.
     void startNextWave();
     void advanceTurn(Grid& grid, const vector<Tower>& towers, vector<Enemy>& enemies);
 

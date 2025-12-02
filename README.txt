@@ -5,8 +5,8 @@ Overview
 --------
 - 20×20 grid with the castle anchored at the bottom center (100 HP).
 - Player places exactly five towers before the first wave begins.
-- Five waves total; each wave spawns ten enemies (one per turn) across the top row.
-- Enemies walk straight down and try diagonal detours when blocked; reaching the castle deals 10 damage and removes the enemy.
+- Five waves total; each wave spawns ten enemies (one per turn) across the top row (wave 1 is random; later waves bias away from towers).
+- Enemies walk straight down and try diagonal detours when blocked; reaching the castle deals 10 damage and removes the enemy; castle HP persists across waves.
 - Enemy types: Basic (3 HP, speed 1), Tank (purple, +2 HP, speed 1), Scout (orange, HP − 1, speed 2).
 - Adaptive AI: if the player finishes a wave with ≥80 % of the possible score and zero castle damage, all future enemies gain +1 base HP.
 
